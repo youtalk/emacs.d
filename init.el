@@ -32,6 +32,20 @@
   (set-frame-font "Source Han Code JP")
   (tool-bar-mode -1))
 
+(set-face-attribute 'font-lock-keyword-face nil
+                    :foreground "#51afef")
+(set-face-attribute 'font-lock-builtin-face nil
+                    :foreground "#56b6c2")
+(set-face-attribute 'font-lock-function-name-face nil
+                    :foreground "#61afef")
+(set-face-attribute 'font-lock-string-face nil
+                    :foreground "#98c379")
+(set-face-attribute 'font-lock-comment-face nil
+                    :foreground "#5c6370")
+(set-face-attribute 'font-lock-warning-face nil
+                    :foreground "#e06c75"
+                    :weight 'bold)
+
 (setq initial-major-mode 'fundamental-mode)
 (setq initial-scratch-message "")
 
@@ -204,8 +218,9 @@
                      )))
 (use-package htmlize)
 (use-package copilot
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
-  :ensure t)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :hook ((prog-mode . copilot-mode)
+         (text-mode . copilot-mode))
+  :bind (:map copilot-completion-map
+              ("TAB" . copilot-accept-completion)
+              ("<tab>" . copilot-accept-completion)))
