@@ -142,8 +142,7 @@
       (if project (cons 'pyproject project))))
   :hook
   (python-ts-mode . (lambda ()
-                      (add-hook 'project-find-functions 'find-pyproject nil t)
-                      (eglot-ensure))))
+                      (add-hook 'project-find-functions 'find-pyproject nil t))))
 (use-package protobuf-mode)
 (use-package rust-ts-mode
   :demand
@@ -160,8 +159,7 @@
         (if metadata (cons 'cargo (gethash "workspace_root" metadata))))))
   :hook
   (rust-ts-mode . (lambda ()
-                    (add-hook 'project-find-functions 'find-cargo-workspace nil t)
-                    (eglot-ensure))))
+                    (add-hook 'project-find-functions 'find-cargo-workspace nil t))))
 (use-package sh-script
   :custom
   (sh-here-document-word " 'EOD'")
