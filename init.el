@@ -61,7 +61,10 @@
   :hook
   (before-save . eglot-format-buffer)
   (eglot-managed-mode . (lambda ()
-                          (eglot-inlay-hints-mode (if window-system +1 -1)))))
+                          (eglot-inlay-hints-mode (if window-system +1 -1))))
+  :config
+  (add-to-list 'eglot-server-programs
+               '(python-ts-mode . ("uvx" "ty" "server"))))
 (use-package magit)
 (use-package orderless
   :custom
