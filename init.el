@@ -145,7 +145,10 @@
 (use-package json-ts-mode)
 (use-package markdown-mode
   :custom
-  (markdown-asymmetric-header t))
+  (markdown-asymmetric-header t)
+  (markdown-command "pandoc -f gfm -t html5")
+  :bind
+  (:map markdown-mode-map ("C-c C-p" . markdown-live-preview-mode)))
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
 (use-package python
