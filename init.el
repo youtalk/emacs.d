@@ -221,10 +221,3 @@
                      (setq tab-width 2)
                      )))
 (use-package htmlize)
-(use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :hook ((prog-mode . copilot-mode)
-         (text-mode . copilot-mode))
-  :bind (:map copilot-completion-map
-              ("TAB" . copilot-accept-completion)
-              ("<tab>" . copilot-accept-completion)))
