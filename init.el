@@ -75,7 +75,10 @@
   :hook
   (before-save . eglot-format-buffer)
   (eglot-managed-mode . (lambda ()
-                          (eglot-inlay-hints-mode (if window-system +1 -1)))))
+                          (eglot-inlay-hints-mode (if window-system +1 -1))))
+  :config
+  (add-to-list 'eglot-server-programs
+               '(python-ts-mode . ("uvx" "ty" "server"))))
 (use-package magit)
 (use-package orderless
   :custom
@@ -95,22 +98,23 @@
       [[("e" "Flymake" consult-flymake)]
        [("g" "Git grep" consult-git-grep)]
        [("h" "Buffer" consult-buffer)]
-       [("j" "Goto line" goto-line)]
+       [("j" "Goto line" consult-goto-line)]
        [("m" "Magit" magit-status)]])))
 (use-package treesit :straight (:type built-in)
   :config
   (let (
         (treesit-language-source-alist
          '(
-           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "v0.1.2")
-           (go "https://github.com/tree-sitter/tree-sitter-go" "v0.20.0")
-           (gomod "https://github.com/camdencheek/tree-sitter-go-mod" "v1.0.0")
-           (json "https://github.com/tree-sitter/tree-sitter-json" "v0.19.0")
-           (python "https://github.com/tree-sitter/tree-sitter-python" "v0.20.4")
-           (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.20.4")
+           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "v0.2.0")
+           (go "https://github.com/tree-sitter/tree-sitter-go" "v0.23.4")
+           (gomod "https://github.com/camdencheek/tree-sitter-go-mod" "v1.1.0")
+           (json "https://github.com/tree-sitter/tree-sitter-json" "v0.24.8")
+           (nix "https://github.com/nix-community/tree-sitter-nix" "v0.3.0")
+           (python "https://github.com/tree-sitter/tree-sitter-python" "v0.23.6")
+           (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.23.2")
            (toml "https://github.com/tree-sitter/tree-sitter-toml" "v0.5.1")
-           (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.2" "tsx/src")
-           (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.2" "typescript/src")
+           (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
+           (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
            (yaml "https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))))
     (dolist (source treesit-language-source-alist)
       (unless (treesit-ready-p (car source) t)
@@ -142,6 +146,8 @@
 (use-package markdown-mode
   :custom
   (markdown-asymmetric-header t))
+(use-package nix-ts-mode
+  :mode "\\.nix\\'")
 (use-package python
   :mode
   ;; https://github.com/emacs-mirror/emacs/blob/emacs-29.1/lisp/progmodes/python.el#L6736
@@ -153,8 +159,7 @@
       (if project (cons 'pyproject project))))
   :hook
   (python-ts-mode . (lambda ()
-                      (add-hook 'project-find-functions 'find-pyproject nil t)
-                      (eglot-ensure))))
+                      (add-hook 'project-find-functions 'find-pyproject nil t))))
 (use-package protobuf-mode)
 (use-package rust-ts-mode
   :demand
@@ -171,8 +176,7 @@
         (if metadata (cons 'cargo (gethash "workspace_root" metadata))))))
   :hook
   (rust-ts-mode . (lambda ()
-                    (add-hook 'project-find-functions 'find-cargo-workspace nil t)
-                    (eglot-ensure))))
+                    (add-hook 'project-find-functions 'find-cargo-workspace nil t))))
 (use-package sh-script
   :custom
   (sh-here-document-word " 'EOD'")
